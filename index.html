@@ -39,7 +39,7 @@
         <h1>
           Sketch Algorithms
         </h1>
-        <h3>Those wierd-shaped things in your toolbox</h3>
+        <h3>Those wierd-shaped things at the back of your toolbox</h3>
         <p>
           Mike Moran
         </p>
@@ -50,19 +50,60 @@
           Bloom filter
         </h2>
       </article>
-      <!--
-      <article class='nobackground'>
-        <iframe src='http://www.jasondavies.com/bloomfilter/'></iframe>
+
+
+      <article>
+        <h3>
+            Why might you want one?
+        </h3>
+        <ul class="build">
+            <li>
+                You have:
+                <ul class="build">
+                    <li>
+                        lots of data about items
+                    </li>
+                    <li>
+                        ... or an infinite stream
+                    </li>
+                    <li>
+                        ... so they won't all fit in memory
+                    </li>
+                </ul>
+            </li>
+            <li>
+                You need to check whether an item has been seen before
+            </li>
+            <li>
+                ... and maybe you want to do this in real time
+            </li>
+        </ul>
       </article>
--->
-      <article class='nobackground'>
-        <p><label for="key">Key:</label> <input type="text" id="key"> <button id="add" class="first last">Add</button>
+
+        <article>
+            <h3>
+                Must accept some limitations
+            </h3>
+            <ul class="build">
+                <li>
+                    You must tolerate some false positives
+                </li>
+                <li>
+                    You can't iterate through all items trivially
+                </li>
+            </ul>
+        </article>
+
+      <article class='nobackground smaller'>
+          <h3>(<a href="http://www.jasondavies.com/bloomfilter/">http://www.jasondavies.com/bloomfilter/</a>)</h3>
+          <input type="text" id="key" style="display:none"> <button id="add" class="first last" style="display:none">Add</button>
           <div id="vis"></div>
-        </p>
+
         <script src="http://www.jasondavies.com/bloomfilter/bloomfilter.js"></script>
         <script src="http://www.jasondavies.com/bloomfilter/bloomvis.js"></script>
         <script>
-            // HACK
+            // HACKS!!!
+
             function add(key) {
                 if (!(key in keySet)) {
                     keySet[key] = 1;
@@ -86,6 +127,8 @@
                 d3.select("#vis input").attr("value", key);
                 update();
             }
+
+            function noop() {}
 
             var action = 0;
             var actions = [
@@ -149,20 +192,113 @@
                 function() {
                     add("n");
                 },
+                noop,
+                noop,
+                noop,
                 reset
             ];
 
             window.setInterval(function() {
                 actions[action]();
                 action = (action + 1) % actions.length;
-            }, 1500);
+            }, 1000);
 
         </script>
       </article>
 
       <article>
+          <h2>
+              Count-Min Sketch
+          </h2>
+      </article>
+
+        <article>
+            <h3>
+                From Bloom Filter to Count-Min Sketch
+            </h3>
+
+            <p class="build">
+                <img src="count-min-sketch.png">
+            </p>
+
+            <ul class="build">
+                <li>
+                    Instead of storing empty/full against a hash, increment a count
+                </li>
+                <li>
+                    On lookup of item, find minimum of all counts found against hashes
+                </li>
+                <li>
+                    That's (probably) your count for that item!
+                </li>
+            </ul>
+        </article>
+
+      <article>
+          <h3>
+              General Caveats of Sketch Algorithms
+          </h3>
+          <ul class="build">
+              <li>
+                  Needs good hash functions
+              </li>
+              <li>
+                  Hard to debug
+              </li>
+              <li>
+                  Fiendish maths
+              </li>
+              <li>
+                  Can you <em>really</em> tolerate error?
+              </li>
+              <li>
+                  I've yet to find a have a good reason to use them in production (instead of exact algorithms)
+                  <ul class="build">
+                      <li>
+                          ... though I was mostly considering Bloom filters before.
+                      </li>
+                  </ul>
+              </li>
+          </ul>
+      </article>
+
+      <article>
+          <h3>
+              Takeaways
+          </h3>
+          <ol class="build">
+              <li>
+                  Sketches are cool!
+              </li>
+              <li>
+                  Consider them when you're working with Big Data&trade; and you can afford to be a teensy bit wrong
+              </li>
+              <li>
+                  Sketches are cool!
+              </li>
+              <li>
+                  Resources:
+                  <ul>
+                      <li>
+                          <a href="http://www.jasondavies.com/bloomfilter/">Bloom Filters (Jason Davies)</a>
+                      </li>
+                      <li>
+                          <a href="http://blog.aggregateknowledge.com/2011/09/13/streaming-algorithms-and-sketches/">Streaming Algorithms and Sketches</a>
+                      </li>
+                      <li>
+                          <a href="https://sites.google.com/site/countminsketch/">Count-Min Sketch home</a>
+                      </li>
+                      <li>
+                          <a href="http://highlyscalable.wordpress.com/2012/05/01/probabilistic-structures-web-analytics-data-mining/">Probabilistic Data Structures for Web Analytics and Data Mining</a>
+                      </li>
+                  </ul>
+              </li>
+          </ol>
+      </article>
+
+      <article>
         <h3>
-          Thank you!
+          Thanks!
         </h3>
       </article>
 

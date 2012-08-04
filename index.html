@@ -25,8 +25,12 @@
   <style>
     /* Your individual styles here, or just use inline styles if that’s
        what you want. */
-    
-    
+    .aside {
+        font-size: smaller;
+    }
+    .aside:before { content: "(" }
+    .aside:after { content: ")" }
+
   </style>
 
   <body style='display: none'>
@@ -223,7 +227,8 @@
 
             <ul class="build">
                 <li>
-                    Instead of storing empty/full against a hash, increment a count
+                    Instead of storing empty/full against a hash, increment a count.
+                    <span class="aside">Count-Min actually uses a two-d array, with a separate array for each hash fn, whereas a Bloom-filter has a single array. </span>
                 </li>
                 <li>
                     On lookup of item, find minimum of all counts found against hashes
@@ -232,6 +237,8 @@
                     That's (probably) your count for that item!
                 </li>
             </ul>
+
+
         </article>
 
       <article>
